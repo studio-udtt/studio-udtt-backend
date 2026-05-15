@@ -15,4 +15,9 @@ public class HelloController {
     public String health() {
         return "OK";
     }
+
+    @GetMapping("/api/test")
+    public String test() {
+        return "test success!";
+    }
 }
