@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ProjectApplicationRepository extends JpaRepository<ProjectApplication, Long> {
 
-    int countByProjectIdAndStatus(Long projectId, ApplicationStatus status);
-    Optional<ProjectApplication> findByIdAndDeletedAtIsNull(Long id);
+    int countByProject_IdAndStatus(Long projectId, ApplicationStatus status);
 
+    Optional<ProjectApplication> findByIdAndDeletedAtIsNull(Long id);
 }
