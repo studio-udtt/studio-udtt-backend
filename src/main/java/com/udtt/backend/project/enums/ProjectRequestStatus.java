@@ -1,4 +1,8 @@
 package com.udtt.backend.project.enums;
 
-public class ProjectRequestStatus {
+public enum ProjectRequestStatus {
+    PENDING,
+    APPROVED,
+    REJECTED,
+    CANCELED
 }
