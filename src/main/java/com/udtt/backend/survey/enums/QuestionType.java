@@ -1,4 +1,8 @@
 package com.udtt.backend.survey.enums;
 
-public class QuestionType {
+public enum QuestionType {
+    TEXT,
+    SINGLE_CHOICE,
+    MULTIPLE_CHOICE,
+    SCORE
 }
