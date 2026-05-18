@@ -1,4 +1,8 @@
 package com.udtt.backend.content.enums;
 
-public class ContentType {
+public enum ContentType {
+    NEWS,
+    INTERVIEW,
+    PRESS,
+    SNS
 }

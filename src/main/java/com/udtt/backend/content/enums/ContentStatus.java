@@ -1,4 +1,7 @@
 package com.udtt.backend.content.enums;
 
-public class ContentStatus {
+public enum ContentStatus {
+    DRAFT,
+    PUBLISHED,
+    PRIVATE
 }

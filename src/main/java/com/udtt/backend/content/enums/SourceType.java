@@ -1,4 +1,6 @@
 package com.udtt.backend.content.enums;
 
-public class SourceType {
+public enum SourceType {
+    MANUAL,
+    CRAWLED
 }
