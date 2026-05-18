@@ -1,4 +1,6 @@
 package com.udtt.backend.sms.enums;
 
-public class SmsRecipientType {
+public enum SmsRecipientType {
+    REQUESTER,
+    APPLICANT
 }

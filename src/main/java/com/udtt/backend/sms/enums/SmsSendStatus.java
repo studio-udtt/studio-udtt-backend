@@ -1,4 +1,7 @@
 package com.udtt.backend.sms.enums;
 
-public class SmsSendStatus {
+public enum SmsSendStatus {
+    READY,
+    SENT,
+    FAILED
 }
