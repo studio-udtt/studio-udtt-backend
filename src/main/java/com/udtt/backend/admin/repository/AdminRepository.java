@@ -11,4 +11,8 @@ public interface AdminRepository extends JpaRepository<Admin, UUID> {
     Optional<Admin> findByLoginIdAndDeletedAtIsNull(String loginId);
 
     Optional<Admin> findByIdAndDeletedAtIsNull(UUID id);
+
+    boolean existsByLoginId(String loginId);
 }
+
+

@@ -4,6 +4,7 @@ import com.udtt.backend.admin.dto.AdminInfoDto;
 import com.udtt.backend.admin.dto.LoginRequestDto;
 import com.udtt.backend.admin.dto.LoginResponseDto;
 import com.udtt.backend.admin.entity.Admin;
+import com.udtt.backend.admin.enums.AdminRole;
 import com.udtt.backend.admin.repository.AdminRepository;
 import com.udtt.backend.global.exception.UnauthorizedException;
 import com.udtt.backend.global.jwt.JwtTokenProvider;
@@ -11,7 +12,10 @@ import com.udtt.backend.global.jwt.TokenBlacklistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -58,5 +62,34 @@ public class AdminAuthServiceImpl implements AdminAuthService {
                 .orElseThrow(() -> new UnauthorizedException("관리자 정보를 찾을 수 없습니다."));
 
         return AdminInfoDto.from(admin);
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> register(Map<String, String> request) {
+        String loginId = request.get("login_id");
+        String password = request.get("password");
+        String name = request.get("name");
+
+        if (adminRepository.existsByLoginId(loginId)) {
+            throw new IllegalArgumentException("이미 사용 중인 관리자 아이디입니다.");
+        }
+
+        Admin admin = Admin.builder()
+                .loginId(loginId)
+                .hashedPassword(passwordEncoder.encode(password))
+                .name(name)
+                .role(AdminRole.ADMIN)
+                .build();
+
+        Admin savedAdmin = adminRepository.save(admin);
+
+        return Map.of(
+                "admin_id", savedAdmin.getId(),
+                "login_id", savedAdmin.getLoginId(),
+                "name", savedAdmin.getName(),
+                "role", savedAdmin.getRole(),
+                "message", "관리자 계정이 생성되었습니다."
+        );
     }
 }
