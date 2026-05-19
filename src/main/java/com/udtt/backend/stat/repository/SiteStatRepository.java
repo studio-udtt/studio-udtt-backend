@@ -8,4 +8,6 @@ import java.util.List;
 public interface SiteStatRepository extends JpaRepository<SiteStat, Long> {
 
     List<SiteStat> findAllByOrderByIdAsc();
+
+    boolean existsByStatKey(String statKey);
 }
