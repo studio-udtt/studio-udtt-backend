@@ -50,3 +50,6 @@ src/test/resources/application-local.yml
 ### Logs ###
 *.log
 logs/
+
+### MAC OS ###
+.DS_Store
