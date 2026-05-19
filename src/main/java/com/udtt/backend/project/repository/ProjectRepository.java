@@ -35,7 +35,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
            "AND (:regionSido IS NULL OR p.regionSido = :regionSido) " +
            "ORDER BY p.createdAt DESC")
     Page<Project> findAllByCondition(
-            @Param("status") String status,
+            @Param("status") ProjectStatus status,
             @Param("regionSido") String regionSido,
             Pageable pageable);
 

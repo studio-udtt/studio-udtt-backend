@@ -36,7 +36,7 @@ public class AdminProjectDetailDto {
     public static AdminProjectDetailDto from(Project p, int approvedCount) {
         return AdminProjectDetailDto.builder()
                 .project_id(p.getId())
-                .request_id(p.getId())
+                .request_id(p.getProjectRequest().getId())
                 .title(p.getTitle())
                 .summary(p.getSummary())
                 .description(p.getDescription())

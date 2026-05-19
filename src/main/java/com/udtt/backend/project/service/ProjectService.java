@@ -4,6 +4,7 @@ import com.udtt.backend.project.dto.ProjectDetailResponse;
 import com.udtt.backend.project.dto.ProjectListResponse;
 import com.udtt.backend.project.dto.ProjectMapResponse;
 import com.udtt.backend.project.entity.Project;
+import com.udtt.backend.project.enums.ApplicationStatus;
 import com.udtt.backend.project.enums.ProjectStatus;
 import com.udtt.backend.project.repository.ProjectApplicationRepository;
 import com.udtt.backend.project.repository.ProjectRepository;
@@ -98,7 +99,7 @@ public class ProjectService {
     private int getApprovedParticipantCount(Long projectId) {
         return projectApplicationRepository.countByProject_IdAndStatus(
                 projectId,
-                "APPROVED"
+                ApplicationStatus.APPROVED
         );
     }
 }
