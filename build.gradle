@@ -31,6 +31,7 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+	implementation 'net.nurigo:sdk:4.3.2'
 }
 
 tasks.named('test') {
