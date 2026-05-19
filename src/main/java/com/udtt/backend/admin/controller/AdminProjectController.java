@@ -22,6 +22,7 @@ import com.udtt.backend.admin.dto.UpdateProjectDto;
 import com.udtt.backend.admin.dto.UpdateProjectStatusDto;
 import com.udtt.backend.admin.service.AdminProjectService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +33,10 @@ public class AdminProjectController {
 
     private final AdminProjectService adminProjectService;
 
-    // GET /api/v1/admin/projects
+    @Operation(
+            summary = "프로젝트 목록 조회",
+            description = "관리자가 프로젝트 목록을 조회합니다. 상태(status)와 지역(region_sido)으로 필터링할 수 있습니다."
+    )
     @GetMapping
     public ResponseEntity<Page<AdminProjectListDto>> getProjectList(
             @RequestParam(required = false) String status,
@@ -44,7 +48,10 @@ public class AdminProjectController {
         return ResponseEntity.ok(adminProjectService.getProjectList(status, region_sido, pageable));
     }
 
-    // GET /api/v1/admin/projects/{project_id}
+    @Operation(
+            summary = "프로젝트 상세 조회",
+            description = "프로젝트 ID를 기준으로 프로젝트의 상세 정보를 조회합니다."
+    )
     @GetMapping("/{project_id}")
     public ResponseEntity<AdminProjectDetailDto> getProjectDetail(
             @PathVariable("project_id") Long projectId) {
@@ -52,7 +59,10 @@ public class AdminProjectController {
         return ResponseEntity.ok(adminProjectService.getProjectDetail(projectId));
     }
 
-    // PATCH /api/v1/admin/projects/{project_id}
+    @Operation(
+            summary = "프로젝트 정보 수정",
+            description = "프로젝트 ID를 기준으로 프로젝트의 제목, 설명, 지역 등의 정보를 수정합니다."
+    )  
     @PatchMapping("/{project_id}")
     public ResponseEntity<Map<String, Object>> updateProject(
             @PathVariable("project_id") Long projectId,
@@ -65,7 +75,10 @@ public class AdminProjectController {
         ));
     }
 
-    // PATCH /api/v1/admin/projects/{project_id}/status
+    @Operation(
+            summary = "프로젝트 상태 변경",
+            description = "프로젝트 ID를 기준으로 프로젝트의 상태를 변경합니다. (예: APPROVED, REJECTED, CANCELED)"
+    )
     @PatchMapping("/{project_id}/status")
     public ResponseEntity<Map<String, Object>> updateProjectStatus(
             @PathVariable("project_id") Long projectId,
@@ -79,7 +92,10 @@ public class AdminProjectController {
         ));
     }
 
-    // DELETE /api/v1/admin/projects/{project_id}
+    @Operation(
+            summary = "프로젝트 삭제",
+            description = "프로젝트 ID를 기준으로 프로젝트를 삭제합니다. 실제로는 프로젝트 상태를 CANCELED로 변경하여 삭제 처리합니다."
+    )
     @DeleteMapping("/{project_id}")
     public ResponseEntity<Map<String, Object>> deleteProject(
             @PathVariable("project_id") Long projectId) {
