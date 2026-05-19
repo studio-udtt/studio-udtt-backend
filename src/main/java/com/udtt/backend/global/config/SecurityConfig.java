@@ -32,37 +32,45 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable)
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                // 공개 API
-                .requestMatchers(HttpMethod.POST, "/api/v1/admin/auth/login").permitAll()
-                .requestMatchers(HttpMethod.GET,
-                    "/api/v1/projects",
-                    "/api/v1/projects/**",
-                    "/api/v1/projects/map",
-                    "/api/v1/contents",
-                    "/api/v1/contents/**",
-                    "/api/v1/site-stats"
-                ).permitAll()
-                .requestMatchers(HttpMethod.POST,
-                    "/api/v1/project-requests",
-                    "/api/v1/projects/*/applications",
-                    "/api/v1/survey-forms/*/responses"
-                ).permitAll()
-                .requestMatchers(HttpMethod.GET,
-                    "/api/v1/project-requests/**",
-                    "/api/v1/applications/**"
-                ).permitAll()
-                // 관리자 전용
-                .requestMatchers("/api/v1/admin/**").authenticated()
-                .anyRequest().authenticated()
-            )
-            .addFilterBefore(
-                new JwtAuthenticationFilter(jwtTokenProvider, tokenBlacklistService),
-                UsernamePasswordAuthenticationFilter.class
-            );
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        // Swagger
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**"
+                        ).permitAll()
+
+                        // 공개 API
+                        .requestMatchers(HttpMethod.POST, "/api/v1/admin/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/v1/projects",
+                                "/api/v1/projects/**",
+                                "/api/v1/projects/map",
+                                "/api/v1/contents",
+                                "/api/v1/contents/**",
+                                "/api/v1/site-stats"
+                        ).permitAll()
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/v1/project-requests",
+                                "/api/v1/projects/*/applications",
+                                "/api/v1/survey-forms/*/responses"
+                        ).permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/v1/project-requests/**",
+                                "/api/v1/applications/**"
+                        ).permitAll()
+
+                        // 관리자 전용
+                        .requestMatchers("/api/v1/admin/**").authenticated()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(
+                        new JwtAuthenticationFilter(jwtTokenProvider, tokenBlacklistService),
+                        UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }
