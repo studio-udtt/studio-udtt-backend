@@ -4,6 +4,7 @@ import com.udtt.backend.admin.dto.AdminInfoDto;
 import com.udtt.backend.admin.dto.LoginRequestDto;
 import com.udtt.backend.admin.dto.LoginResponseDto;
 
+import java.util.Map;
 import java.util.UUID;
 
 public interface AdminAuthService {
@@ -13,4 +14,6 @@ public interface AdminAuthService {
     void logout(String token);
 
     AdminInfoDto getMe(UUID adminId);
+
+    Map<String, Object> register(Map<String, String> request);
 }
