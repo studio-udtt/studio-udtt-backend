@@ -4,6 +4,8 @@ import com.udtt.backend.admin.dto.AdminInfoDto;
 import com.udtt.backend.admin.dto.LoginRequestDto;
 import com.udtt.backend.admin.dto.LoginResponseDto;
 import com.udtt.backend.admin.service.AdminAuthService;
+
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,19 +24,19 @@ public class AdminAuthController {
 
     private final AdminAuthService adminAuthService;
 
-    /**
-     * POST /api/v1/admin/auth/login
-     * 관리자 로그인 — JWT access_token 발급
-     */
+    @Operation(
+            summary = "관리자 로그인",
+            description = "관리자 로그인을 수행하고 JWT access_token을 발급합니다."
+    )
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto request) {
         return ResponseEntity.ok(adminAuthService.login(request));
     }
 
-    /**
-     * POST /api/v1/admin/auth/logout
-     * 관리자 로그아웃 — 토큰 블랙리스트 등록
-     */
+    @Operation(
+            summary = "관리자 로그아웃",
+            description = "관리자 로그아웃을 수행하고 JWT 토큰을 블랙리스트에 추가합니다."
+    )
     @PostMapping("/logout")
     public ResponseEntity<Map<String, String>> logout(
             @RequestHeader("Authorization") String authHeader) {
@@ -44,10 +46,10 @@ public class AdminAuthController {
         return ResponseEntity.ok(Map.of("message", "로그아웃되었습니다."));
     }
 
-    /**
-     * GET /api/v1/admin/auth/me
-     * 현재 로그인한 관리자 정보 조회
-     */
+    @Operation(
+            summary = "현재 관리자 정보 조회",
+            description = "현재 로그인한 관리자의 정보를 조회합니다."
+    )
     @GetMapping("/me")
     public ResponseEntity<AdminInfoDto> getMe(
             @AuthenticationPrincipal UUID adminId) {
@@ -62,10 +64,10 @@ public class AdminAuthController {
         throw new IllegalArgumentException("유효하지 않은 Authorization 헤더입니다.");
     }
 
-    /**
-     * POST /api/v1/admin/auth/register
-     * 개발용 관리자 회원가입
-     */
+    @Operation(
+            summary = "관리자 회원가입 (개발용)",
+            description = "개발 환경에서 관리자 계정을 생성하기 위한 API입니다. 실제 운영 환경에서는 사용하지 마세요."
+    )
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> register(
             @RequestBody DevAdminRegisterRequest request) {
