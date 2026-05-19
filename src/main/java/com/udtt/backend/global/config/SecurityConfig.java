@@ -44,7 +44,10 @@ public class SecurityConfig {
                         ).permitAll()
 
                         // 공개 API
-                        .requestMatchers(HttpMethod.POST, "/api/v1/admin/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/v1/admin/auth/login",
+                                "/api/v1/admin/auth/register"
+                        ).permitAll()
                         .requestMatchers(HttpMethod.GET,
                                 "/api/v1/projects",
                                 "/api/v1/projects/**",

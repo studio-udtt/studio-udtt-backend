@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 import java.util.UUID;
@@ -59,5 +60,31 @@ public class AdminAuthController {
             return authHeader.substring(7);
         }
         throw new IllegalArgumentException("유효하지 않은 Authorization 헤더입니다.");
+    }
+
+    /**
+     * POST /api/v1/admin/auth/register
+     * 개발용 관리자 회원가입
+     */
+    @PostMapping("/register")
+    public ResponseEntity<Map<String, Object>> register(
+            @RequestBody DevAdminRegisterRequest request) {
+
+        Map<String, String> registerRequest = Map.of(
+                "login_id", request.loginId(),
+                "password", request.password(),
+                "name", request.name()
+        );
+
+        return ResponseEntity.ok(adminAuthService.register(registerRequest));
+    }
+    public record DevAdminRegisterRequest(
+            @JsonProperty("login_id")
+            String loginId,
+
+            String password,
+
+            String name
+    ) {
     }
 }
