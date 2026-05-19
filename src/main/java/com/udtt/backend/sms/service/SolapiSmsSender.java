@@ -12,19 +12,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class SolapiSmsSender implements SmsSender {
 
-    private final DefaultMessageService messageService;
+    private final String apiKey;
+    private final String apiSecret;
+    private final String domain;
 
     public SolapiSmsSender(
-            @Value("${solapi.api-key}") String apiKey,
-            @Value("${solapi.api-secret}") String apiSecret,
+            @Value("${solapi.api-key:}") String apiKey,
+            @Value("${solapi.api-secret:}") String apiSecret,
             @Value("${solapi.domain:https://api.coolsms.co.kr}") String domain
     ) {
-        this.messageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecret, domain);
+        this.apiKey = apiKey;
+        this.apiSecret = apiSecret;
+        this.domain = domain;
     }
 
     @Override
     public boolean send(String phone, String messageContent, String senderNumber) {
+        if (apiKey.isBlank() || apiSecret.isBlank()) {
+            log.warn("SOLAPI API Key 또는 Secret이 설정되지 않아 SMS 발송을 건너뜁니다.");
+            return false;
+        }
+
         try {
+            DefaultMessageService messageService =
+                    NurigoApp.INSTANCE.initialize(apiKey, apiSecret, domain);
+
             Message message = new Message();
             message.setFrom(normalizePhoneNumber(senderNumber));
             message.setTo(normalizePhoneNumber(phone));
