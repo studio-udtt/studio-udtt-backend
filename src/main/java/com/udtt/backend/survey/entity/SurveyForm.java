@@ -34,4 +34,23 @@ public class SurveyForm extends BaseTimeEntity {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    public void update(String title, String description, String googleFormUrl, Boolean active) {
+        if (title != null) {
+            this.title = title;
+        }
+        if (description != null) {
+            this.description = description;
+        }
+        if (googleFormUrl != null) {
+            this.googleFormUrl = googleFormUrl;
+        }
+        if (active != null) {
+            this.active = active;
+        }
+    }
+
+    public void delete() {
+        this.deletedAt = LocalDateTime.now();
+    }
 }
