@@ -55,4 +55,22 @@ public class ProjectApplication extends BaseTimeEntity {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    public void approve() {
+        this.status = ApplicationStatus.APPROVED;
+        this.approvedAt = LocalDateTime.now();
+    }
+
+    public void reject() {
+        this.status = ApplicationStatus.REJECTED;
+        this.rejectedAt = LocalDateTime.now();
+    }
+
+    public void cancel() {
+        this.status = ApplicationStatus.CANCELED;
+    }
+
+    public void delete() {
+        this.deletedAt = LocalDateTime.now();
+    }
 }
