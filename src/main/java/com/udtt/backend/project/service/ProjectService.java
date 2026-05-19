@@ -99,7 +99,7 @@ public class ProjectService {
     private int getApprovedParticipantCount(Long projectId) {
         return projectApplicationRepository.countByProject_IdAndStatus(
                 projectId,
-                ApplicationStatus.APPROVED
+                "APPROVED"
         );
     }
 }

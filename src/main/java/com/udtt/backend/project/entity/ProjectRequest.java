@@ -67,4 +67,18 @@ public class ProjectRequest extends BaseTimeEntity {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    public void approve() {
+        this.status = ProjectRequestStatus.APPROVED;
+        this.approvedAt = LocalDateTime.now();
+    }
+
+    public void reject(String rejectReason) {
+        this.status = ProjectRequestStatus.REJECTED;
+        this.rejectedAt = LocalDateTime.now();
+    }
+
+    public void cancel() {
+        this.status = ProjectRequestStatus.CANCELED;
+    }
 }
