@@ -1,0 +1,24 @@
+package com.udtt.backend.stat.service;
+
+import com.udtt.backend.stat.dto.SiteStatResponse;
+import com.udtt.backend.stat.repository.SiteStatRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class SiteStatService {
+
+    private final SiteStatRepository siteStatRepository;
+
+    public List<SiteStatResponse> getSiteStats() {
+        return siteStatRepository.findAllByOrderByIdAsc()
+                .stream()
+                .map(SiteStatResponse::from)
+                .toList();
+    }
+}
