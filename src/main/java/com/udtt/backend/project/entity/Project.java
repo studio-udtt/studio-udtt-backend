@@ -1,5 +1,6 @@
 package com.udtt.backend.project.entity;
 
+import com.udtt.backend.admin.dto.UpdateProjectDto;
 import com.udtt.backend.global.entity.BaseTimeEntity;
 import com.udtt.backend.project.enums.ProjectStatus;
 import jakarta.persistence.*;
@@ -81,4 +82,29 @@ public class Project extends BaseTimeEntity {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    public void update(UpdateProjectDto dto) {
+        if (dto.getTitle() != null)               this.title = dto.getTitle();
+        if (dto.getSummary() != null)             this.summary = dto.getSummary();
+        if (dto.getDescription() != null)         this.description = dto.getDescription();
+        if (dto.getProject_type() != null)        this.projectType = dto.getProject_type();
+        if (dto.getSpace_size() != null)          this.spaceSize = dto.getSpace_size();
+        if (dto.getAddress() != null)             this.address = dto.getAddress();
+        if (dto.getRegion_sido() != null)         this.regionSido = dto.getRegion_sido();
+        if (dto.getRegion_sigungu() != null)      this.regionSigungu = dto.getRegion_sigungu();
+        if (dto.getRecruit_start_date() != null)  this.recruitStartDate = dto.getRecruit_start_date();
+        if (dto.getRecruit_end_date() != null)    this.recruitEndDate = dto.getRecruit_end_date();
+        if (dto.getProject_start_date() != null)  this.projectStartDate = dto.getProject_start_date();
+        if (dto.getProject_end_date() != null)    this.projectEndDate = dto.getProject_end_date();
+        if (dto.getMax_participants() != null)    this.maxParticipants = dto.getMax_participants();
+        if (dto.getIs_visible() != null)          this.visible = dto.getIs_visible();
+    }
+
+    public void updateStatus(String status) {
+        this.status = ProjectStatus.valueOf(status);
+    }
+
+    public void softDelete() {
+        this.deletedAt = LocalDateTime.now();
+    }
 }
