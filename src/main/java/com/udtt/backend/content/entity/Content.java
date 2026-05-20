@@ -61,4 +61,36 @@ public class Content extends BaseTimeEntity {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    public void update(String title, String summary, String body, String thumbnailUrl) {
+        if (title != null) {
+            this.title = title;
+        }
+
+        if (summary != null) {
+            this.summary = summary;
+        }
+
+        if (body != null) {
+            this.body = body;
+        }
+
+        if (thumbnailUrl != null) {
+            this.thumbnailUrl = thumbnailUrl;
+        }
+    }
+
+    public void updateStatus(ContentStatus status) {
+        if (status != null) {
+            this.status = status;
+
+            if (status == ContentStatus.PUBLISHED) {
+                this.publishedAt = LocalDateTime.now();
+            }
+        }
+    }
+
+    public void delete() {
+        this.deletedAt = LocalDateTime.now();
+    }
 }
