@@ -77,7 +77,7 @@ public class AdminProjectController {
 
     @Operation(
             summary = "프로젝트 상태 변경",
-            description = "프로젝트 ID를 기준으로 프로젝트의 상태를 변경합니다. (예: APPROVED, REJECTED, CANCELED)"
+            description = "프로젝트 ID를 기준으로 프로젝트의 상태를 변경합니다. (예: RECRUITING, IN_PROGRESS, COMPLETED, CANCELED)"
     )
     @PatchMapping("/{project_id}/status")
     public ResponseEntity<Map<String, Object>> updateProjectStatus(

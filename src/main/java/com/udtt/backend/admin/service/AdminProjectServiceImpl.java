@@ -14,6 +14,8 @@ import com.udtt.backend.admin.dto.UpdateProjectStatusDto;
 import com.udtt.backend.global.exception.BadRequestException;
 import com.udtt.backend.global.exception.NotFoundException;
 import com.udtt.backend.project.entity.Project;
+import com.udtt.backend.project.enums.ApplicationStatus;
+import com.udtt.backend.project.enums.ProjectStatus;
 import com.udtt.backend.project.repository.ProjectApplicationRepository;
 import com.udtt.backend.project.repository.ProjectRepository;
 
@@ -28,11 +30,12 @@ public class AdminProjectServiceImpl implements AdminProjectService {
 
     @Override
     public Page<AdminProjectListDto> getProjectList(String status, String regionSido, Pageable pageable) {
+        ProjectStatus projectStatus = parseProjectStatus(status);
         return projectRepository
-                .findAllByCondition(status, regionSido, pageable)
+                .findAllByCondition(projectStatus, regionSido, pageable)
                 .map(p -> {
                     int approvedCount = projectApplicationRepository
-                            .countByProject_IdAndStatus(p.getId(), "APPROVED");
+                            .countByProject_IdAndStatus(p.getId(), ApplicationStatus.APPROVED);
                     return AdminProjectListDto.from(p, approvedCount);
                 });
     }
@@ -41,7 +44,7 @@ public class AdminProjectServiceImpl implements AdminProjectService {
     public AdminProjectDetailDto getProjectDetail(Long projectId) {
         Project project = findProjectOrThrow(projectId);
         int approvedCount = projectApplicationRepository
-                .countByProject_IdAndStatus(projectId, "APPROVED");
+                .countByProject_IdAndStatus(projectId, ApplicationStatus.APPROVED);
         return AdminProjectDetailDto.from(project, approvedCount);
     }
 
@@ -70,7 +73,7 @@ public class AdminProjectServiceImpl implements AdminProjectService {
     public void deleteProject(Long projectId) {
         Project project = findProjectOrThrow(projectId);
 
-        if (project.getStatus().equals("CANCELED")) {
+        if (project.getStatus() == ProjectStatus.CANCELED) {
             throw new BadRequestException("이미 취소된 프로젝트입니다.");
         }
 
@@ -83,5 +86,17 @@ public class AdminProjectServiceImpl implements AdminProjectService {
         return projectRepository
                 .findByIdAndDeletedAtIsNull(projectId)
                 .orElseThrow(() -> new NotFoundException("프로젝트를 찾을 수 없습니다."));
+    }
+
+    private ProjectStatus parseProjectStatus(String status) {
+        if (status == null || status.isBlank()) {
+            return null;
+        }
+
+        try {
+            return ProjectStatus.valueOf(status);
+        } catch (IllegalArgumentException e) {
+            throw new BadRequestException("유효하지 않은 상태값입니다: " + status);
+        }
     }
 }

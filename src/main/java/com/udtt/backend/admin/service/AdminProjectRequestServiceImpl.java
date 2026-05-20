@@ -14,6 +14,7 @@ import com.udtt.backend.global.exception.BadRequestException;
 import com.udtt.backend.global.exception.NotFoundException;
 import com.udtt.backend.project.entity.Project;
 import com.udtt.backend.project.entity.ProjectRequest;
+import com.udtt.backend.project.enums.ProjectRequestStatus;
 import com.udtt.backend.project.enums.ProjectStatus;
 import com.udtt.backend.project.repository.ProjectRepository;
 import com.udtt.backend.project.repository.ProjectRequestRepository;
@@ -53,7 +54,7 @@ public class AdminProjectRequestServiceImpl implements AdminProjectRequestServic
                 .orElseThrow(() -> new NotFoundException("의뢰를 찾을 수 없습니다."));
 
         // 이미 처리된 의뢰인지 검증
-        if (!request.getStatus().equals("PENDING")) {
+        if (request.getStatus() != ProjectRequestStatus.PENDING) {
             throw new BadRequestException("이미 처리된 의뢰입니다. 현재 상태: " + request.getStatus());
         }
 
@@ -62,7 +63,7 @@ public class AdminProjectRequestServiceImpl implements AdminProjectRequestServic
 
         // 프로젝트 생성
         Project project = Project.builder()
-                .id(request.getId())
+                .projectRequest(request)
                 .title(dto.getTitle())
                 .summary(dto.getSummary())
                 .description(dto.getDescription())
@@ -87,8 +88,8 @@ public class AdminProjectRequestServiceImpl implements AdminProjectRequestServic
         return ApproveProjectRequestResponseDto.builder()
                 .request_id(request.getId())
                 .project_id(savedProject.getId())
-                .request_status("APPROVED")
-                .project_status("RECRUITING")
+                .request_status(request.getStatus().name())
+                .project_status(savedProject.getStatus().name())
                 .message("의뢰가 승인되고 모집 프로젝트로 등록되었습니다.")
                 .build();
     }
@@ -101,7 +102,7 @@ public class AdminProjectRequestServiceImpl implements AdminProjectRequestServic
                 .findByIdAndDeletedAtIsNull(requestId)
                 .orElseThrow(() -> new NotFoundException("의뢰를 찾을 수 없습니다."));
 
-        if (!request.getStatus().equals("PENDING")) {
+        if (request.getStatus() != ProjectRequestStatus.PENDING) {
             throw new BadRequestException("이미 처리된 의뢰입니다. 현재 상태: " + request.getStatus());
         }
 
@@ -116,7 +117,7 @@ public class AdminProjectRequestServiceImpl implements AdminProjectRequestServic
                 .findByIdAndDeletedAtIsNull(requestId)
                 .orElseThrow(() -> new NotFoundException("의뢰를 찾을 수 없습니다."));
 
-        if (request.getStatus().equals("CANCELED")) {
+        if (request.getStatus() == ProjectRequestStatus.CANCELED) {
             throw new BadRequestException("이미 취소된 의뢰입니다.");
         }
 
