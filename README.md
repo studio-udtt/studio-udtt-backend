@@ -23,7 +23,7 @@
 ---
 
 ## 📁 프로젝트 구조
-
+```
 src/
 └── main/
     ├── java/com/udtt/backend/
@@ -44,3 +44,4 @@ src/
     └── resources/
         ├── application.properties
         └── application-prod.properties
+```
