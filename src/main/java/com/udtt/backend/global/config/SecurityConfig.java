@@ -96,7 +96,8 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
                 "https://studio.udtt.org",
-                "https://www.studio.udtt.org"
+                "https://www.studio.udtt.org",
+                "https://api.studio.udtt.org"
         ));
 
         config.setAllowedMethods(List.of(
