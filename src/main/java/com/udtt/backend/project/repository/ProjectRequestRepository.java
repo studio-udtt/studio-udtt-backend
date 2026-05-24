@@ -1,6 +1,7 @@
 package com.udtt.backend.project.repository;
 
 import com.udtt.backend.project.entity.ProjectRequest;
+import com.udtt.backend.project.enums.ProjectRequestStatus;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,6 @@ public interface ProjectRequestRepository extends JpaRepository<ProjectRequest, 
            "AND (:status IS NULL OR r.status = :status) " +
            "ORDER BY r.createdAt DESC")
     Page<ProjectRequest> findAllByStatusAndNotDeleted(
-            @Param("status") String status,
+            @Param("status") ProjectRequestStatus status,
             Pageable pageable);
 }
