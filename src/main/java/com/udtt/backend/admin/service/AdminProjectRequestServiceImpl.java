@@ -31,8 +31,9 @@ public class AdminProjectRequestServiceImpl implements AdminProjectRequestServic
 
     @Override
     public Page<AdminProjectRequestListDto> getRequestList(String status, Pageable pageable) {
+        ProjectRequestStatus requestStatus = parseProjectRequestStatus(status);
         return projectRequestRepository
-                .findAllByStatusAndNotDeleted(status, pageable)
+                .findAllByStatusAndNotDeleted(requestStatus, pageable)
                 .map(AdminProjectRequestListDto::from);
     }
 
@@ -122,5 +123,17 @@ public class AdminProjectRequestServiceImpl implements AdminProjectRequestServic
         }
 
         request.cancel();
+    }
+
+    private ProjectRequestStatus parseProjectRequestStatus(String status) {
+        if (status == null || status.isBlank()) {
+            return null;
+        }
+
+        try {
+            return ProjectRequestStatus.valueOf(status);
+        } catch (IllegalArgumentException e) {
+            throw new BadRequestException("유효하지 않은 상태값입니다: " + status);
+        }
     }
 }

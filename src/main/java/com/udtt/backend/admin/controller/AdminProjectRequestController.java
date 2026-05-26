@@ -35,7 +35,7 @@ public class AdminProjectRequestController {
 
     @Operation(
             summary = "프로젝트 의뢰 목록 조회",
-            description = "관리자가 프로젝트 의뢰 목록을 조회합니다. 상태(status)로 필터링할 수 있습니다."
+            description = "관리자가 프로젝트 의뢰 목록을 조회합니다. 상태(status)로 필터링할 수 있습니다. status : PENDING, APPROVED, REJECTED"
     )
     @GetMapping
     public ResponseEntity<Page<AdminProjectRequestListDto>> getRequestList(
