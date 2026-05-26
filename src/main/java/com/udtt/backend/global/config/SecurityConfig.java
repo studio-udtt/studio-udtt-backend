@@ -43,13 +43,15 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Swagger
-                        .requestMatchers(
-                                "/",
-                                "/health",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/v3/api-docs/**"
-                        ).permitAll()
+                            .requestMatchers(
+                                    "/",
+                                    "/health",
+                                    "/swagger-ui/**",
+                                    "/swagger-ui.html",
+                                    "/v3/api-docs/**",
+                                    "/api/v1/space/telemetry",
+                                    "/api/v1/space/telemetry/latest"
+                            ).permitAll()
 
                         // Preflight 요청 허용
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
